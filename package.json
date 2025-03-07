@@ -32,11 +32,5 @@
     "unocss": "^66.0.0",
     "vite": "catalog:",
     "vitest": "catalog:"
-  },
-  "simple-git-hooks": {
-    "pre-commit": "pnpm lint-staged"
-  },
-  "lint-staged": {
-    "*": "eslint --fix"
   }
 }

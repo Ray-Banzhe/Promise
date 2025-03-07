@@ -22,11 +22,5 @@
   "types": "./dist/index.d.mts",
   "files": [
     "dist"
-  ],
-  "scripts": {
-    "build": "unbuild",
-    "dev": "unbuild --stub",
-    "prepublishOnly": "nr build",
-    "start": "tsx src/index.ts"
-  }
+  ]
 }
