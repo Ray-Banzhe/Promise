@@ -1,11 +1,11 @@
-import { Collapsible, Field } from '@chakra-ui/react';
-import { Input, Button, Card, Stack } from '@chakra-ui/react';
+import { Field } from '@chakra-ui/react';
+import { Input, Button, Card, Stack, Link } from '@chakra-ui/react';
 import { useForm, SubmitHandler } from 'react-hook-form';
+import { Link as ReactLink } from 'react-router-dom';
 
 interface LoginForm {
   email: string;
   password: string;
-  inviteCode: string;
 }
 
 function Login() {
@@ -18,7 +18,7 @@ function Login() {
     <div className="flex h-screen justify-center items-center">
       <Card.Root w="full" maxW="lg" h="90" pb="4">
         <Card.Header>
-          <Card.Title>登陆</Card.Title>
+          <Card.Title>登录</Card.Title>
           <Card.Description>
             请输入您的邮箱和密码
           </Card.Description>
@@ -32,24 +32,19 @@ function Login() {
             </Field.Root>
             <Field.Root>
               <Field.Label>密码</Field.Label>
-              <Input placeholder="********" {...register('password')} />
+              <Input placeholder="********" type="password" {...register('password')} />
               <Field.ErrorText>密码格式错误</Field.ErrorText>
             </Field.Root>
-            <Collapsible.Root>
-              <Collapsible.Trigger>
-                <div className='text-12px'>邀请码(选填)</div>
-              </Collapsible.Trigger>
-              <Collapsible.Content>
-                <Field.Root>
-                  <Input placeholder="123456" {...register('inviteCode')} />
-                  <Field.ErrorText>邀请码格式错误</Field.ErrorText>
-                </Field.Root>
-              </Collapsible.Content>
-            </Collapsible.Root>
           </Stack>
         </Card.Body>
-        <Card.Footer justifyContent="center" flexDirection="column">
+        <Card.Footer justifyContent="center" flexDirection="column" gap="2">
           <Button variant="solid" colorPalette="cyan" className="w-full" onClick={handleSubmit(onSubmit)}>登录</Button>
+          <div className="text-center text-sm">
+            还没有账号？
+            <Link asChild colorPalette="cyan">
+              <ReactLink to="/register">注册</ReactLink>
+            </Link>
+          </div>
         </Card.Footer>
       </Card.Root>
     </div>

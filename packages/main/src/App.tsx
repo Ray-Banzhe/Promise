@@ -1,12 +1,12 @@
-import Login from './pages/login';
 import { Provider } from './components/ui/provider';
+import router from './routes';
+import { RouterProvider } from 'react-router-dom';
 
 const App = () => {
   return (
     <Provider>
-      <main>
-        <Login />
-      </main>
+      <RouterProvider router={router}>
+      </RouterProvider>
     </Provider>
   );
 };
