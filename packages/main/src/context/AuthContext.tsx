@@ -1,46 +1,48 @@
-import React, { createContext, useState, useEffect, useContext } from 'react';
-import { useNavigate } from 'react-router-dom';
+import type React from 'react'
+import { createContext, useState, useEffect, useContext } from 'react'
 
 interface AuthContextType {
-  isAuthenticated: boolean;
-  login: (token: string) => void;
-  logout: () => void;
+	isAuthenticated: boolean
+	login: (token: string) => void
+	logout: () => void
 }
 
-const AuthContext = createContext<AuthContextType | null>(null);
+const AuthContext = createContext<AuthContextType | null>(null)
 
-export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
+	children,
+}) => {
+	const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false)
 
-  useEffect(() => {
-    // 初始化时检查认证状态
-    const token = localStorage.getItem('token');
-    if (token) {
-      setIsAuthenticated(true);
-    }
-  }, []);
+	useEffect(() => {
+		// 初始化时检查认证状态
+		const token = localStorage.getItem('token')
+		if (token) {
+			setIsAuthenticated(true)
+		}
+	}, [])
 
-  const login = (token: string) => {
-    localStorage.setItem('token', token);
-    setIsAuthenticated(true);
-  };
+	const login = (token: string) => {
+		localStorage.setItem('token', token)
+		setIsAuthenticated(true)
+	}
 
-  const logout = () => {
-    localStorage.removeItem('token');
-    setIsAuthenticated(false);
-  };
+	const logout = () => {
+		localStorage.removeItem('token')
+		setIsAuthenticated(false)
+	}
 
-  return (
-    <AuthContext.Provider value={{ isAuthenticated, login, logout }}>
-      {children}
-    </AuthContext.Provider>
-  );
-};
+	return (
+		<AuthContext.Provider value={{ isAuthenticated, login, logout }}>
+			{children}
+		</AuthContext.Provider>
+	)
+}
 
 export const useAuth = () => {
-  const context = useContext(AuthContext);
-  if (!context) {
-    throw new Error('useAuth must be used within an AuthProvider');
-  }
-  return context;
-};
+	const context = useContext(AuthContext)
+	if (!context) {
+		throw new Error('useAuth must be used within an AuthProvider')
+	}
+	return context
+}

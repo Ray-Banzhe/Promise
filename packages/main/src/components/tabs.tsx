@@ -1,5 +1,5 @@
 function Tabs() {
-  return <div className='text-red-500'>Tabs</div>;
+	return <div className="text-red-500">Tabs</div>
 }
 
-export default Tabs;
+export default Tabs
