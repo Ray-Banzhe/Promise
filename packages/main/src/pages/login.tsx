@@ -1,7 +1,10 @@
+import { useAuth } from '@/context/AuthContext';
 import { Field } from '@chakra-ui/react';
 import { Input, Button, Card, Stack, Link } from '@chakra-ui/react';
 import { useForm, SubmitHandler } from 'react-hook-form';
-import { Link as ReactLink } from 'react-router-dom';
+import { Link as ReactLink, useNavigate } from 'react-router-dom';
+import { login as loginApi } from '@/data/auth';
+import { useRequest } from 'ahooks';
 
 interface LoginForm {
   email: string;
@@ -9,9 +12,17 @@ interface LoginForm {
 }
 
 function Login() {
+  const {runAsync} = useRequest(loginApi, {
+    manual: true,
+  })
+  const navigate = useNavigate()
+  const {login} = useAuth()
+
   const { register, handleSubmit } = useForm<LoginForm>();
-  const onSubmit: SubmitHandler<LoginForm> = (data) => {
-    console.log(data);
+  const onSubmit: SubmitHandler<LoginForm> = async (data) => {
+    const {token} = await runAsync(data);
+    login(token);
+    navigate('/');
   };
 
   return (

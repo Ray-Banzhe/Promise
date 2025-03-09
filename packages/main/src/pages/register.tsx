@@ -1,6 +1,9 @@
 import { Collapsible, Field, Card, Input, Stack, Link, Button } from '@chakra-ui/react';
+import { useRequest } from 'ahooks';
 import { SubmitHandler, useForm } from "react-hook-form";
-import { Link as ReactLink } from 'react-router-dom';
+import { Link as ReactLink, useNavigate } from 'react-router-dom';
+import { register as registerApi } from '@/data/auth';
+import { useAuth } from '@/context/AuthContext';
 
 interface LoginForm {
   email: string;
@@ -10,10 +13,22 @@ interface LoginForm {
 }
 
 function Register() {
-  const { register, handleSubmit } = useForm<LoginForm>();
-  const onSubmit: SubmitHandler<LoginForm> = (data) => {
-    console.log(data);
+  const {runAsync} = useRequest(registerApi, {
+    manual: true,
+  })
+  const navigate = useNavigate()
+  const {login} = useAuth()
+
+  const { register, handleSubmit, formState: { errors }, watch } = useForm<LoginForm>();
+  const onSubmit: SubmitHandler<LoginForm> = async (data) => {
+    const {token} = await runAsync(data);
+    login(token);
+    navigate('/');
   };
+
+
+  // 获取密码值用于确认密码验证
+  const password = watch('password');
 
   return (
     <div className="flex h-screen justify-center items-center">
@@ -23,29 +38,67 @@ function Register() {
         </Card.Header>
         <Card.Body>
         <Stack gap="4" w="full">
-          <Field.Root>
+          <Field.Root invalid={!!errors.email}>
             <Field.Label>邮箱</Field.Label>
-            <Input placeholder="me@example.com" {...register('email')} />
-            <Field.ErrorText>邮箱格式错误</Field.ErrorText>
+            <Input 
+              placeholder="me@example.com" 
+              {...register('email', { 
+                required: "邮箱不能为空", 
+                pattern: {
+                  value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                  message: "邮箱格式错误"
+                }
+              })} 
+            />
+            {errors.email && <Field.ErrorText>{errors.email.message}</Field.ErrorText>}
           </Field.Root>
-          <Field.Root>
+          <Field.Root invalid={!!errors.password}>
             <Field.Label>密码</Field.Label>
-            <Input placeholder="********" type="password" {...register('password')} />
-            <Field.ErrorText>密码格式错误</Field.ErrorText>
+            <Input 
+              placeholder="********" 
+              type="password" 
+              {...register('password', { 
+                required: "密码不能为空", 
+                minLength: {
+                  value: 8,
+                  message: "密码至少需要8个字符"
+                },
+                pattern: {
+                  value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/,
+                  message: "密码需包含大小写字母和数字"
+                }
+              })} 
+            />
+            <Field.ErrorText>{errors.password?.message}</Field.ErrorText>
           </Field.Root>
-          <Field.Root>
+          <Field.Root invalid={!!errors.rePassword}>
             <Field.Label>确认密码</Field.Label>
-            <Input placeholder="********" type="password" {...register('rePassword')} />
-            <Field.ErrorText>两次密码不一致</Field.ErrorText>
+            <Input 
+              placeholder="********" 
+              type="password" 
+              {...register('rePassword', { 
+                required: "确认密码不能为空",
+                validate: value => value === password || "两次密码不一致"
+              })} 
+            />
+            <Field.ErrorText>{errors.rePassword?.message}</Field.ErrorText>
           </Field.Root> 
           <Collapsible.Root>
             <Collapsible.Trigger>
               <div className='text-12px'>邀请码(选填)</div>
             </Collapsible.Trigger>
             <Collapsible.Content>
-              <Field.Root>
-                <Input placeholder="123456" {...register('inviteCode')} />
-                <Field.ErrorText>邀请码格式错误</Field.ErrorText>
+              <Field.Root invalid={!!errors.inviteCode}>
+                <Input 
+                  placeholder="123456" 
+                  {...register('inviteCode', { 
+                    pattern: {
+                      value: /^[A-Za-z0-9]{6,12}$/,
+                      message: "邀请码格式错误"
+                    }
+                  })} 
+                />
+                 <Field.ErrorText>{errors.inviteCode?.message}</Field.ErrorText>
               </Field.Root>
             </Collapsible.Content>
           </Collapsible.Root>
