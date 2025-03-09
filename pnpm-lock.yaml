@@ -213,6 +213,9 @@ importers:
         specifier: ^7.3.0
         version: 7.3.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
     devDependencies:
+      '@iconify-json/fluent':
+        specifier: ^1.2.15
+        version: 1.2.15
       '@rsbuild/core':
         specifier: ^1.2.14
         version: 1.2.15
@@ -228,9 +231,6 @@ importers:
       '@unocss/postcss':
         specifier: 66.1.0-beta.3
         version: 66.1.0-beta.3(postcss@8.5.1)
-      oxlint:
-        specifier: ^0.15.13
-        version: 0.15.13
       typescript:
         specifier: ^5.8.2
         version: 5.8.2
@@ -989,6 +989,9 @@ packages:
   '@humanwhocodes/retry@0.4.1':
     resolution: {integrity: sha512-c7hNEllBlenFTHBky65mhq8WD2kbN9Q6gk0bTk8lSBvc554jpXSkST1iePudpt7+A/AQvuHs9EMqjHDXMY1lrA==}
     engines: {node: '>=18.18'}
+
+  '@iconify-json/fluent@1.2.15':
+    resolution: {integrity: sha512-Xxbq0c7y+nGim6zgv+ZRh9MAAEsjXAYqUOvAZnwcTdXTdplGleLVM1d/xAuAje9CKFdbQN6zlfcfqJ26X39MPA==}
 
   '@iconify-json/logos@1.2.4':
     resolution: {integrity: sha512-XC4If5D/hbaZvUkTV8iaZuGlQCyG6CNOlaAaJaGa13V5QMYwYjgtKk3vPP8wz3wtTVNVEVk3LRx1fOJz+YnSMw==}
@@ -5430,6 +5433,10 @@ snapshots:
   '@humanwhocodes/retry@0.3.0': {}
 
   '@humanwhocodes/retry@0.4.1': {}
+
+  '@iconify-json/fluent@1.2.15':
+    dependencies:
+      '@iconify/types': 2.0.0
 
   '@iconify-json/logos@1.2.4':
     dependencies:

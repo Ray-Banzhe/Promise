@@ -2,7 +2,11 @@ import { createBrowserRouter, Navigate, Outlet } from 'react-router-dom'
 import Login from './pages/login'
 import Register from './pages/register'
 import ToDo from './pages/todo'
+import Calendar from './pages/calendar'
+import Tomato from './pages/tomato'
+import Settings from './pages/settings'
 import { useAuth } from './context/AuthContext'
+import MainLayout from './components/layouts/MainLayout'
 
 // 路由守卫组件
 interface ProtectedRouteProps {
@@ -55,16 +59,33 @@ const router = createBrowserRouter([
 			</PublicRoute>
 		),
 	},
-	// 受保护路由 - 需要登录才能访问
+	// 受保护路由 - 需要登录才能访问，使用MainLayout布局
 	{
 		path: '/',
 		element: (
 			<ProtectedRoute authenticationPath="/login">
-				<ToDo />
+				<MainLayout />
 			</ProtectedRoute>
 		),
+		children: [
+			{
+				path: '',
+				element: <ToDo />,
+			},
+			{
+				path: 'calendar',
+				element: <Calendar />,
+			},
+			{
+				path: 'tomato',
+				element: <Tomato />,
+			},
+			{
+				path: 'settings',
+				element: <Settings />,
+			},
+		],
 	},
-	// 可以添加更多路由
 ])
 
 export default router
